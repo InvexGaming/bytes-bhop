@@ -8,8 +8,12 @@
 #pragma semicolon 1
 #pragma newdecls required
 
-#define PLUGIN_VERSION "1.00"
-#define WATER_LEVEL_FEET_IN_WATER 2
+#define PLUGIN_VERSION "1.01"
+
+#define WATER_LEVEL_DRY     0
+#define WATER_LEVEL_FEET    1
+#define WATER_LEVEL_HALF    2
+#define WATER_LEVEL_FULL    3
 
 bool g_LateLoaded = false;
 
@@ -113,7 +117,7 @@ public Action OnPlayerRunCmd(int client, int &buttons)
   if (GetEntityMoveType(client) & MOVETYPE_LADDER)
     return Plugin_Continue;
 
-  if (GetEntProp(client, Prop_Data, "m_nWaterLevel") > WATER_LEVEL_FEET_IN_WATER)
+  if (GetEntProp(client, Prop_Data, "m_nWaterLevel") > WATER_LEVEL_FEET)
     return Plugin_Continue;
 
   if (GetEntityFlags(client) & FL_ONGROUND)
