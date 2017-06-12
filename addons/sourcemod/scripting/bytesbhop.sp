@@ -8,7 +8,7 @@
 #pragma semicolon 1
 #pragma newdecls required
 
-#define PLUGIN_VERSION "1.01"
+#define PLUGIN_VERSION "1.02"
 
 #define WATER_LEVEL_DRY     0
 #define WATER_LEVEL_FEET    1
@@ -40,21 +40,12 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
 
 public void OnPluginStart()
 {
-  CreateConVar("sm_b1bhop_version", PLUGIN_VERSION, "B1's Bhop Plugin Version", FCVAR_SPONLY|FCVAR_REPLICATED|FCVAR_NOTIFY|FCVAR_CHEAT|FCVAR_DONTRECORD);
-  g_BhopEnabled = CreateConVar("sm_b1bhop_enabled", "1", "Enable/disable the bunny hopping.");
+  CreateConVar("sm_bytesbhop_version", PLUGIN_VERSION, "Byte's Bhop Plugin Version", FCVAR_SPONLY|FCVAR_REPLICATED|FCVAR_NOTIFY|FCVAR_CHEAT|FCVAR_DONTRECORD);
+  g_BhopEnabled = CreateConVar("sm_bytesbhop_enabled", "1", "Enable/disable the bunny hopping.");
   AutoExecConfig(true, "bytesbhop");
   
   //Reg commands
   RegConsoleCmd("sm_bhop", Command_Toggle_Bhop, "Toggle auto-bhop.");
-  
-  g_Cvar_sv_autobunnyhopping = FindConVar("sv_autobunnyhopping");
-  g_Cvar_sv_autobunnyhopping.BoolValue = false;
-  
-  //Set convars for CSGO
-  FindConVar("sv_enablebunnyhopping").IntValue = 1;
-  FindConVar("sv_staminamax").IntValue = 0;
-  FindConVar("sv_staminajumpcost").IntValue = 0;
-  FindConVar("sv_staminalandcost").IntValue = 0;
   
   //Late load our hook
   if (g_LateLoaded) {
@@ -65,6 +56,18 @@ public void OnPluginStart()
     
     g_LateLoaded = false;
   }
+}
+
+public void OnMapStart()
+{
+  g_Cvar_sv_autobunnyhopping = FindConVar("sv_autobunnyhopping");
+  g_Cvar_sv_autobunnyhopping.BoolValue = false;
+  
+  //Set convars for CSGO
+  FindConVar("sv_enablebunnyhopping").BoolValue = true;
+  FindConVar("sv_staminamax").IntValue = 0;
+  FindConVar("sv_staminajumpcost").IntValue = 0;
+  FindConVar("sv_staminalandcost").IntValue = 0;
 }
 
 public void OnClientPutInServer(int client)
